@@ -12,6 +12,7 @@ public class Menu{
     StdDraw.line(0.05, 0.21, 0.95, 0.21);
     Font font = new Font("Arial", Font.BOLD, 40);
     StdDraw.setFont(font);
+    StdDraw.textLeft(0.25, 0.8, "{Game Name}");
     StdDraw.setPenColor(StdDraw.WHITE);
     StdDraw.textLeft(0.05, 0.2, "Press Spacebar To Play");
   }
