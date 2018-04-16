@@ -2,7 +2,7 @@
 public class Invaders{
   public static void main(String[] args) {
     
-  InaderGameState invaderGameState = new InaderGameState();
+  InvaderGameState game = new InvaderGameState();
   
 }
 }
