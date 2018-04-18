@@ -3,7 +3,7 @@ public class Missile extends DefaultCritter{
   private double y;
   
   public Missile(Shooter protagonist){ //the missile has the same initial direction and position as the shooter
-    super(0.1* Math.cos(protagonist.get_theta()), 0.1 * Math.sin(protagonist.get_theta()),protagonist.get_x(), protagonist.get_y(), protagonist.get_theta());
+    super(protagonist.dx, protagonist.dy ,protagonist.get_x(), protagonist.get_y(), protagonist.get_theta());
   }
   
   public double get_x(){
@@ -30,7 +30,7 @@ public class Missile extends DefaultCritter{
     //StdDraw.clear(StdDraw.BLACK);
     
     StdDraw.setPenColor(StdDraw.WHITE);
-    StdDraw.filledCircle(super.x-0.01, 0.15, 0.01);
+    StdDraw.filledCircle(super.x-0.01, super.y, 0.01);
   }
   
 }
