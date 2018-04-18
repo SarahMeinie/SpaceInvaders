@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class InvaderGameState{
   double InitialX = 0.5;
-  double InitialY = 0.1;
+  double InitialY = 0.5;
   double InitialTheta = 0;
   public InvaderGameState(){
     boolean alive =true;
@@ -17,16 +17,20 @@ public class InvaderGameState{
     ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     ArrayList<Missile> laser = new ArrayList<Missile>();
     
-         
-            
-    MenuSetUp();
+    
+    
+    StdDraw.enableDoubleBuffering();
     
     while(!StdDraw.isKeyPressed(32)){      //Go to game when Spacebar is pressed
+    StdDraw.pause(2);
+    MenuSetUp();
+    StdDraw.show();
     } 
     
     while(alive){ 
       StdDraw.clear(StdDraw.BLACK);
-      StdDraw.enableDoubleBuffering();
+      StdDraw.pause(2);
+      //StdDraw.enableDoubleBuffering();
       if(StdDraw.isKeyPressed(70)){      //rotate left if S is pressed 
         player.rotate_anti();
       }
@@ -49,17 +53,30 @@ public class InvaderGameState{
       //***NOT WORKING***
       if (StdDraw.isKeyPressed(87)){      //release missile if w is pressed 
         Missile bullet = new Missile(player);  //gives missile the same initial x and y value as shooter
-        laser.add(bullet);
-        bullet.move();    
+        laser.add(bullet);  
       }
       
-      if (StdDraw.isKeyPressed(81)){
-      System.exit(0);
-      }
       
       player.draw_shooter();
-      StdDraw.show(20);
-      //bullet.draw();
+      
+      //loop through all elements in laser list and draw all of the missiles in the list
+      for(int i = 0; i<laser.size(); i++){
+       Missile missile1 = laser.get(i);
+        //check if missile has bounced off the side of the screen
+        if (missile1.get_x() >= 1 || missile1.get_x()<=0){
+          missile1.touching_wall();
+        }
+        //check if missile has touched an enemy
+        
+        //check if missile has gone to the top of the screen, remove from array if it is
+        if (missile1.get_y()>=1 || missile1.get_y()<=0){
+          laser.remove(i);
+        }
+        //draw the missile1
+        missile1.move();
+      }
+
+      StdDraw.show();
       
       //for (String s : nums){
       //System.out.println(s);
