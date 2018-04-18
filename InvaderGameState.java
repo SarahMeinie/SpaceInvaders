@@ -8,84 +8,85 @@ import java.util.ArrayList;
  * */
 
 public class InvaderGameState{
-  double InitialX = 0.5;
-  double InitialY = 0.5;
-  double InitialTheta = 0;
+  
+  
   public InvaderGameState(){
-    boolean alive =true;
-    Shooter player = new Shooter(0.01, 0, InitialX, InitialY, InitialTheta);
-    ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-    ArrayList<Missile> laser = new ArrayList<Missile>();
-    
-    
-    
     StdDraw.enableDoubleBuffering();
+    double InitialX = 0.5;
+    double InitialY = 0.5;
+    double InitialTheta = 0;
+    boolean alive =true;
+    boolean playing = false;
     
-    while(!StdDraw.isKeyPressed(32)){      //Go to game when Spacebar is pressed
-    StdDraw.pause(2);
-    MenuSetUp();
-    StdDraw.show();
-    } 
-    
-    while(alive){ 
-      StdDraw.clear(StdDraw.BLACK);
-      StdDraw.pause(2);
-      //StdDraw.enableDoubleBuffering();
-      if(StdDraw.isKeyPressed(70)){      //rotate left if S is pressed 
-        player.rotate_anti();
-      }
-      
-      
-      if (StdDraw.isKeyPressed(37)){      // move left if left arrow key is pressed
-        player.move_left();  
-      }
-      
-      
-      if(StdDraw.isKeyPressed(83)){       //rotate right if F is pressed 
-        player.rotate_clock(); 
-      }
-      
-      
-      if (StdDraw.isKeyPressed(39)){       // move right if right arrow key is pressed
-        player.move_right();
+    while(!StdDraw.isKeyPressed(27)){      //exit game when escape is pressed
+      if(!playing){
+        StdDraw.pause(2);
+        MenuSetUp();
+        StdDraw.show();
+        if(StdDraw.isKeyPressed(32)){
+          playing = true;
+        }
       } 
-      
-      //***NOT WORKING***
-      if (StdDraw.isKeyPressed(87)){      //release missile if w is pressed 
-        Missile bullet = new Missile(player);  //gives missile the same initial x and y value as shooter
-        laser.add(bullet);  
-      }
-      
-      
-      player.draw_shooter();
-      
-      //loop through all elements in laser list and draw all of the missiles in the list
-      for(int i = 0; i<laser.size(); i++){
-       Missile missile1 = laser.get(i);
-        //check if missile has bounced off the side of the screen
-        if (missile1.get_x() >= 1 || missile1.get_x()<=0){
-          missile1.touching_wall();
-        }
-        //check if missile has touched an enemy
+      if (playing){
+        Shooter player = new Shooter(0.01, 0, InitialX, InitialY, InitialTheta);
+        ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+        ArrayList<Missile> laser = new ArrayList<Missile>();
         
-        //check if missile has gone to the top of the screen, remove from array if it is
-        if (missile1.get_y()>=1 || missile1.get_y()<=0){
-          laser.remove(i);
+        
+        while(alive){ 
+          StdDraw.pause(2);
+          StdDraw.clear(StdDraw.BLACK);
+          if(StdDraw.isKeyPressed(70)){      //rotate left if S is pressed 
+            player.rotate_anti();}
+          
+          if (StdDraw.isKeyPressed(37)){      // move left if left arrow key is pressed
+            player.move_left();}
+          
+          if(StdDraw.isKeyPressed(83)){       //rotate right if F is pressed 
+            player.rotate_clock();}
+          
+          if (StdDraw.isKeyPressed(39)){       // move right if right arrow key is pressed
+            player.move_right();} 
+          
+          if (StdDraw.isKeyPressed(87)){      //release missile if w is pressed 
+            Missile bullet = new Missile(player);  //gives missile the same initial x and y value as shooter
+            laser.add(bullet);}
+          
+          player.move_shooter();
+          
+          //loop through all elements in laser list and draw all of the missiles in the list
+          for(int i = 0; i<laser.size(); i++){
+            Missile missile1 = laser.get(i);
+            missile1.move();
+            
+            //check if missile has bounced off the side of the screen
+            if (missile1.get_x() >= 0.95  || missile1.get_x()<=0.05){
+              missile1.touching_wall();
+            }
+            
+            //check if missile has touched an enemy
+            
+            //check if missile has gone to the top of the screen, remove from array if it is
+            if (missile1.get_y()>=0.95 || missile1.get_y()<=0.05){
+              laser.remove(i);
+            }
+            
+            //draw the missile1
+            missile1.draw();
+          }
+          
+          
+          StdDraw.show();
+          
+          //for (String s : nums){
+          //System.out.println(s);
+          //  }
         }
-        //draw the missile1
-        missile1.move();
       }
-
-      StdDraw.show();
-      
-      //for (String s : nums){
-      //System.out.println(s);
-      //  }
-      
       
     }
+    System.exit(0);
   }
-  
   
   public void MenuSetUp(){  //Creates Start Up Menu
     StdDraw.picture(0.5, 0.5, "stars.jpg", 1, 1);
@@ -100,6 +101,6 @@ public class InvaderGameState{
     StdDraw.setPenColor(StdDraw.WHITE);
     StdDraw.textLeft(0.05, 0.2, "Press Spacebar To Play");
     StdDraw.show();
-  }
-  
+    
+  } 
 }

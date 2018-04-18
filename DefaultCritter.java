@@ -2,15 +2,15 @@ public class DefaultCritter implements Critter {
   
   protected double x;
   protected double y;
-  protected double dx  = 0.01;
-  protected double dy  = 0.5;
+  protected double dx;
+  protected double dy;
   protected double theta;
   protected double deg = 5;
   private double min_angle=-90;
   private double max_angle=90;
-  private double min_x=0.05;
-  private double max_x=0.95;
-  private double max_y=0.05;
+  protected double min_x=0.05;
+  protected double max_x=0.95;
+  protected double max_y=0.05;
   private double vx;
   private double vy;
   private int radius;
@@ -34,11 +34,12 @@ public class DefaultCritter implements Critter {
   public double get_theta(){
     return theta;}
   
-  public void set_x(double posx){
-    x = posx;}
+  public void set_dx(double posdx){
+    dx = posdx;}
   
-  public void set_y(double posy){
-    y = posy;}
+  public void set_dy(double posdy){
+    dy = posdy;}
+  
   public double get_x(){
     return x;}
   
@@ -69,21 +70,21 @@ public class DefaultCritter implements Critter {
     }
   }
   public void move_left(){
-    x -= dx;
+    x -= vx;
     if (x < min_x){
       x = min_x;
     }
   }
   
   public void move_right(){
-    x += dx;
+    x += vx;
     if (x > max_x){
       x = max_x;
     }
   }
   public void move_up(){
     while(y>max_y){
-      y -= dy;
+      y -= vy;
       if(y<max_y){
         y = max_y;
       }
