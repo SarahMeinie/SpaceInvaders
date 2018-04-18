@@ -17,7 +17,8 @@ public class InvaderGameState{
     ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     ArrayList<Missile> laser = new ArrayList<Missile>();
     
-    
+         
+            
     MenuSetUp();
     
     while(!StdDraw.isKeyPressed(32)){      //Go to game when Spacebar is pressed
@@ -52,6 +53,9 @@ public class InvaderGameState{
         bullet.move();    
       }
       
+      if (StdDraw.isKeyPressed(81)){
+      System.exit(0);
+      }
       
       player.draw_shooter();
       StdDraw.show(20);
