@@ -1,11 +1,11 @@
 public class DefaultCritter implements Critter {
   
-  private double x   = 0.5;
-  private double y   = 0.1;
-  private double dx  = 0.01;
-  private double dy  = 0.5;
-  private double theta = 0;
-  private double deg = 5;
+  protected double x;
+  protected double y;
+  protected double dx  = 0.01;
+  protected double dy  = 0.5;
+  protected double theta;
+  protected double deg = 5;
   private double min_angle=-90;
   private double max_angle=90;
   private double min_x=0.05;
@@ -16,6 +16,13 @@ public class DefaultCritter implements Critter {
   private int radius;
   private int health;
   
+  public DefaultCritter(double vx, double vy, double x, double y, double theta){
+    this.vx = vx;
+    this.vy = vy;
+    this.x = x;
+    this.y = y;
+    this.theta = theta;
+  }
   
   public void set_VelocityX(double velocityx){
     vx = velocityx;}

@@ -3,68 +3,70 @@ import java.awt.Font;
 import java.awt.Color;
 import java.util.ArrayList;
 
-
 /*
  * Dealing with updates 
  * */
 
 public class InvaderGameState{
+  double InitialX = 0.5;
+  double InitialY = 0.1;
+  double InitialTheta = 0;
   public InvaderGameState(){
     boolean alive =true;
-    Shooter player = new Shooter();
+    Shooter player = new Shooter(0.01, 0, InitialX, InitialY, InitialTheta);
     ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     ArrayList<Missile> laser = new ArrayList<Missile>();
-
-
-    //Go to game when Spacebar is pressed
-    while(!StdDraw.isKeyPressed(32)){  
-      MenuSetUp();
-    } //Is there a better way to implement this?
     
-    StdDraw.clear(StdDraw.BLACK);
-  
+    
+    MenuSetUp();
+    
+    while(!StdDraw.isKeyPressed(32)){      //Go to game when Spacebar is pressed
+    } 
+    
     while(alive){ 
-      //rotate left if S is pressed 
-      if(StdDraw.isKeyPressed(70)){
+      StdDraw.clear(StdDraw.BLACK);
+      StdDraw.enableDoubleBuffering();
+      if(StdDraw.isKeyPressed(70)){      //rotate left if S is pressed 
         player.rotate_anti();
       }
       
-      // move left if left arrow key is pressed
-      if (StdDraw.isKeyPressed(37)){
+      
+      if (StdDraw.isKeyPressed(37)){      // move left if left arrow key is pressed
         player.move_left();  
       }
       
-      //rotate right if F is pressed 
-      if(StdDraw.isKeyPressed(83)){
+      
+      if(StdDraw.isKeyPressed(83)){       //rotate right if F is pressed 
         player.rotate_clock(); 
       }
       
-      // move right if right arrow key is pressed
-      if (StdDraw.isKeyPressed(39)){
+      
+      if (StdDraw.isKeyPressed(39)){       // move right if right arrow key is pressed
         player.move_right();
       } 
       
       //***NOT WORKING***
-      //release missile if w is pressed 
-      if (StdDraw.isKeyPressed(87)){
-        Missile bullet = new Missile(player.get_x(), player.get_y()); //gives missile the same initial x and y value as shooter
-        bullet.move_up();
-       // bullet.draw_missile();    
+      if (StdDraw.isKeyPressed(87)){      //release missile if w is pressed 
+        Missile bullet = new Missile(player);  //gives missile the same initial x and y value as shooter
+        laser.add(bullet);
+        bullet.move();    
       }
       
       
-StdDraw.picture(player.get_x(), player.get_y(), "shooter.png", 0.1, 0.1, player.get_theta());
-StdDraw.show(20);
-StdDraw.clear(StdDraw.BLACK);
-
-    //for (String s : nums){
-    //System.out.println(s);
-    //  }
+      player.draw_shooter();
+      StdDraw.show(20);
+      //bullet.draw();
+      
+      //for (String s : nums){
+      //System.out.println(s);
+      //  }
+      
+      
     }
   }
   
-  //Creates Start Up Menu
-    public void MenuSetUp(){
+  
+  public void MenuSetUp(){  //Creates Start Up Menu
     StdDraw.picture(0.5, 0.5, "stars.jpg", 1, 1);
     StdDraw.setPenRadius(0.095);
     StdDraw.setPenColor(StdDraw.BLACK);
@@ -78,5 +80,5 @@ StdDraw.clear(StdDraw.BLACK);
     StdDraw.textLeft(0.05, 0.2, "Press Spacebar To Play");
     StdDraw.show();
   }
-
+  
 }

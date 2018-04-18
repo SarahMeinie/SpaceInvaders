@@ -1,18 +1,36 @@
 public class Missile extends DefaultCritter{
-   private double h=0.1;
- private double w=0.1;
- private double x; 
- private double y;
- 
- public Missile(double xx, double yy){
-   this.x = xx;
-   this.y = yy;
- }
- 
-  public void draw(){
-      //this.x = x;
-      StdDraw.clear(StdDraw.BLACK);
-      StdDraw.picture(x, y, "bullet.png", w, h, get_theta());
-      StdDraw.show(20);
+  private double x; 
+  private double y;
+  
+  public Missile(Shooter protagonist){ //the missile has the same initial direction and position as the shooter
+    super(0.1* Math.cos(protagonist.get_theta()), 0.1 * Math.sin(protagonist.get_theta()),protagonist.get_x(), protagonist.get_y(), protagonist.get_theta());
   }
+  
+  public double get_x(){
+    return super.x;
+  }
+  
+  public double get_y(){
+    return super.y;
+  }
+  
+  public void touching_wall(){ //if the bullet touches the wall, invert the velocity
+    super.dx = - super.dx;
+    super.dy = - super.dy;
+  }
+  
+  public void move(){
+    super.y = super.y + super.dy;
+    super.x = super.x + super.dx;
+    draw();
+  }
+  
+  public void draw(){
+    //this.x = x;
+    //StdDraw.clear(StdDraw.BLACK);
+    
+    StdDraw.setPenColor(StdDraw.WHITE);
+    StdDraw.filledCircle(super.x-0.01, 0.15, 0.01);
+  }
+  
 }
