@@ -6,8 +6,7 @@ public class Enemy extends DefaultCritter{
   }
   
   public void draw(){
-    StdDraw.setPenColor(StdDraw.RED);
-    StdDraw.filledCircle(x,y,0.025);
+    StdDraw.picture(x, y, "alien.png", 0.1, 0.1);
   }
   public void move(){
     if(temp==0) {
