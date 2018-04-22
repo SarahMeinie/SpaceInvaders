@@ -13,8 +13,6 @@ public class InvaderGameState{
     double previous_time=0;
     boolean alive =true;
     boolean playing = false;
-    StdDraw.setXscale(0.0, 1.0);
-    StdDraw.setYscale(0.0, 1.0);
     Shooter player = new Shooter(0.01, 0, 0.5, 0.1, 0); //initial values for the shooter
     ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     ArrayList<Missile> laser = new ArrayList<Missile>();
@@ -44,6 +42,7 @@ public class InvaderGameState{
         //for some reason the enemies get closer to each other as they go down the screen
         
         while(alive){ 
+          
           StdDraw.clear(StdDraw.BLACK);
           StdDraw.pause(10);
           current_time = System.currentTimeMillis();
@@ -69,6 +68,7 @@ public class InvaderGameState{
             previous_time = System.currentTimeMillis(); //this ensures that a missile can only be released every 0.35 seconds
             Missile bullet = new Missile(0.008*Math.cos(Math.toRadians(player.theta+90)), 0.008*Math.sin(Math.toRadians(player.theta+90)), player.x, 0.1,player.theta);  //gives missile the same initial x and y value as shooter
             laser.add(bullet); 
+            StdAudio.play("laser.wav");
           }
           
           
@@ -77,6 +77,8 @@ public class InvaderGameState{
           }
           
             for (int i = 0; i < enemies.size(); i++) {//constantly update movement of enemies and do collision checking
+            //for (Enemy enemies : enemies) {         
+
               boolean collision = false;
               Enemy enemy1 = enemies.get(i);
               enemy1.move();//update enemy position and draw
@@ -90,6 +92,8 @@ public class InvaderGameState{
                   score += 1;
                   enemies.remove(i);
                   laser.remove(k);
+                  StdAudio.play("explosion.wav");
+                  System.out.println(score);
                   break;
                 
               }
@@ -107,11 +111,14 @@ public class InvaderGameState{
           
           //add something to display score at the corner of the screen
           player.draw_shooter();
+          Font font = new Font("Arial", Font.BOLD, 25);
+          StdDraw.setFont(font);
+          StdDraw.text(0.85, 0.95, "Score: "+ score);
           StdDraw.show(30);
         }
         //draw end game screen
         endgame();
-        
+       
       }
     }
     System.exit(0); 
@@ -144,6 +151,9 @@ public void endgame(){
   StdDraw.setPenColor(StdDraw.RED);
   if(!win){
   StdDraw.text(0.2, 0.2, "shame");
+  if(StdDraw.isKeyPressed(89)){
+          boolean alive = true;
+  }
   //display score
   }
   else{
@@ -153,6 +163,7 @@ public void endgame(){
   StdDraw.show();
 //endgame screen
 }
+
 }
 
 
