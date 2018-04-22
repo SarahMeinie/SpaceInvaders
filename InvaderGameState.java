@@ -21,7 +21,7 @@ public class InvaderGameState{
     double previous_time=0;
     boolean alive =true;
     boolean playing = false;
-    Shooter player = new Shooter(0.01, 0, 0.5, 0.1, 0,0); //initial values for the shooter
+    Shooter player = new Shooter(0.01, 0, 0.5, 0.1, 0); //initial values for the shooter
     ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     ArrayList<Missile> laser = new ArrayList<Missile>();
     StdDraw.enableDoubleBuffering();
