@@ -15,6 +15,7 @@ public class InvaderGameState{
   boolean win =true;
   boolean a = false;
   int score;
+  int lives =3;
   public InvaderGameState(){
     
     double current_time;
@@ -24,6 +25,7 @@ public class InvaderGameState{
     Shooter player = new Shooter(0.01, 0, 0.5, 0.1, 0); //initial values for the shooter
     ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     ArrayList<Missile> laser = new ArrayList<Missile>();
+    ArrayList<Lives> lives_list = new ArrayList<Lives>();
     StdDraw.enableDoubleBuffering();
     
     
@@ -50,13 +52,24 @@ public class InvaderGameState{
           }
         }
         
+        
+        
         //for some reason the enemies get closer to each other as they go down the screen
         
+        
+        //creates lives at the corner of the screen
+        for(double a = 0; a<0.19; a+=0.05){
+          Lives life = new Lives(0.2+a);
+          lives_list.add(life);
+        }
         while(alive){ 
           
           StdDraw.clear(StdDraw.BLACK);
           StdDraw.pause(10);
           current_time = System.currentTimeMillis();
+          
+          
+          
           
           
           if(StdDraw.isKeyPressed(70)){      //rotate left if S is pressed 
@@ -95,10 +108,28 @@ public class InvaderGameState{
             enemy1.move();//update enemy position and draw
             if(enemy1.y <= 0.02){
               StdDraw.pause(500); 
-              //play a happy sound
-              win = false;   //if an enemy gets to the end of the screen the game is over and the player has lost
-              alive = false; 
-              
+              //play a sad sound
+              if(lives_list.size()>0){ //if the player loses and still has lives restart the game
+                //remove all enemies
+                enemies.clear();
+                //remove all missiles
+                laser.clear();
+                
+                //redraw the missiles and enemies
+                player = new Shooter(0.01, 0, 0.5, 0.1, 0);
+                
+                for (double m = 0; m < 0.17; m += 0.06) {//creates 7x3 grid of enemies
+                  for (double j = 0; j < 0.4; j += 0.06) {
+                    Enemy enemy = new Enemy(enemy_XVelocity, enemy_YVelocity, 0.02 + j, 0.98 - m); 
+                    enemies.add(enemy);
+                  }
+                }
+                lives_list.remove(0); //the player loses a life
+                
+              }else{
+                win = false;   //if an enemy gets to the end of the screen the game is over and the player has lost
+                alive = false; 
+              }
             }
             
             
@@ -117,7 +148,7 @@ public class InvaderGameState{
             }
             if(enemies.size() == 0){
               StdDraw.pause(500); 
-              //play a sad sound
+              //play a happy sound
               win = true;
               alive = false; //if all of the enemies have been defeated the game ends and the player wins
             }
@@ -133,18 +164,24 @@ public class InvaderGameState{
           }
           
           //add something to display score at the corner of the screen
+          
           player.draw_shooter();
           Font font = new Font("Gill Sans Ultra Bold", Font.BOLD, 25);
           StdDraw.setFont(font);
           StdDraw.setPenColor(StdDraw.WHITE);
           StdDraw.text(0.85, 0.95, "Score: "+score);
+          
+          //display lives
+          StdDraw.text(0.1, 0.95, "Lives: ");
+          for(int b = 0; b < lives_list.size(); b++){
+            lives_list.get(b).draw();
+          }
           StdDraw.show(35);
           
         }
-        //draw end game screen
-        endgame();
+        endgame(); //draws endgame screen
       }
-
+      
     }
     System.exit(0); 
   }
@@ -170,13 +207,12 @@ public class InvaderGameState{
     else return false;
   }
   
-  
   public void endgame(){
     StdDraw.clear();
     StdDraw.setPenColor(StdDraw.RED);
     if(!win){
       StdDraw.text(0.2, 0.2, "shame");
-
+      
       //display score
       HighScore(score);
       if(StdDraw.isKeyPressed(89)){
