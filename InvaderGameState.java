@@ -14,6 +14,7 @@ import java.util.Arrays;
 public class InvaderGameState{
   boolean win =true;
   boolean a = false;
+  int timecnt;		// reference value for score
   int score;
   int lives =3;
   public InvaderGameState(){
@@ -40,7 +41,7 @@ public class InvaderGameState{
       }
       
       if(playing){ 
-        
+        timecnt = 233;
         double enemy_XVelocity = 0.1;
         double enemy_YVelocity = 0.03;
         
@@ -107,9 +108,10 @@ public class InvaderGameState{
             Enemy enemy1 = enemies.get(i);
             enemy1.move();//update enemy position and draw
             if(enemy1.y <= 0.02){
-              StdDraw.pause(500); 
-              //play a sad sound
+              StdDraw.pause(1000); 
+              StdAudio.play("gameoversound.wav");
               if(lives_list.size()>0){ //if the player loses and still has lives restart the game
+            	  timecnt = 233;
                 //remove all enemies
                 enemies.clear();
                 //remove all missiles
@@ -136,19 +138,18 @@ public class InvaderGameState{
             for (int k = 0; k < laser.size(); k++) { //check  the position of the missiles and compare it to the position of enemies to see if any have collided
               Missile missile1 = laser.get(k);
               if(collision(missile1, enemy1)) { 
-                score += 1;
+                //score += 1;
                 enemies.remove(i);
                 laser.remove(k);
                 StdAudio.play("explosion.wav");
                 System.out.println(score);
                 break;
                 
-              }
-              
+              } 
             }
             if(enemies.size() == 0){
               StdDraw.pause(500); 
-              //play a happy sound
+              StdAudio.play("leveluptone.wav");
               win = true;
               alive = false; //if all of the enemies have been defeated the game ends and the player wins
             }
@@ -177,7 +178,8 @@ public class InvaderGameState{
             lives_list.get(b).draw();
           }
           StdDraw.show(35);
-          
+          timecnt -=0.1;
+          score = timecnt;
         }
         endgame(); //draws endgame screen
       }
