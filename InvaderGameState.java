@@ -13,149 +13,211 @@ import java.util.Arrays;
 
 public class InvaderGameState{
   boolean win =true;
+  
   boolean a = false;
-  int timecnt;		// reference value for score
+  int timecnt;  // reference value for score
   int score;
   int lives =3;
-  public InvaderGameState(){
-    
+  
+  
+  public InvaderGameState(int multiplayer){
+    boolean playing = false;
     double current_time;
     double previous_time=0;
     boolean alive =true;
-    boolean playing = false;
-    Shooter player = new Shooter(0.01, 0, 0.5, 0.1, 0); //initial values for the shooter
+    
     ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     ArrayList<Missile> laser = new ArrayList<Missile>();
+    ArrayList<Missile> laser1 = new ArrayList<Missile>();
+    ArrayList<Missile> laser2 = new ArrayList<Missile>();
+    
     ArrayList<Lives> lives_list = new ArrayList<Lives>();
     StdDraw.enableDoubleBuffering();
     
     
-    while (!StdDraw.isKeyPressed(27)){ //run the entire game loop only when escape or q arent pressed
-      if(!playing){
-        StdDraw.pause(2);
-        MenuSetUp();
-        StdDraw.show();
-        if(StdDraw.isKeyPressed(32)){      //Go to game when Spacebar is pressed
-          playing =true;
-        } 
+    while (!StdDraw.isKeyPressed(81)){ //run the entire game loop only when escape or q arent pressed
+      
+      
+      Shooter player = new Shooter(0.01, 0, 0.5, 0.1, 0); //initial values for the shooter
+      Shooter player1 = new Shooter(0.01, 0, 0.1, 0.1, 0); //initial values for shooter1
+      Shooter player2 = new Shooter(0.01, 0, 0.8, 0.1, 0); //initial values for shooter2 
+      
+      timecnt = 233;
+      double enemy_XVelocity = 0.05;
+      double enemy_YVelocity = 0.03;
+      
+      for (double i = 0; i < 0.17; i += 0.06) {//creates 7x3 grid of enemies
+        for (double j = 0; j < 0.4; j += 0.06) {
+          //0.02 is the initial x value and 0.98 is the initial y value
+          Enemy enemy = new Enemy(enemy_XVelocity, enemy_YVelocity, 0.02 + j, 0.98 - i); 
+          enemies.add(enemy);
+        }
       }
       
-      if(playing){ 
-        timecnt = 233;
-        double enemy_XVelocity = 0.1;
-        double enemy_YVelocity = 0.03;
+      //for some reason the enemies get closer to each other as they go down the screen
+      
+      //creates lives at the corner of the screen
+      for(double a = 0.15; a>0; a-=0.05){
+        Lives life = new Lives(0.15+a);
+        lives_list.add(life);
+      }
+      
+      
+      while(alive){ 
         
-        for (double i = 0; i < 0.17; i += 0.06) {//creates 7x3 grid of enemies
-          for (double j = 0; j < 0.4; j += 0.06) {
-            //0.02 is the initial x value and 0.98 is the initial y value
-            Enemy enemy = new Enemy(enemy_XVelocity, enemy_YVelocity, 0.02 + j, 0.98 - i); 
-            enemies.add(enemy);
-          }
+        StdDraw.clear(StdDraw.BLACK);
+        StdDraw.pause(10);
+        current_time = System.currentTimeMillis();
+        
+        
+        if(StdDraw.isKeyPressed(100)){      //rotate left if NUMPAD4 is pressed 
+          if (multiplayer == 1){           
+            player2.rotate_anti();
+          }                          //controls for player 1
         }
         
         
-        
-        //for some reason the enemies get closer to each other as they go down the screen
-        
-        
-        //creates lives at the corner of the screen
-        for(double a = 0; a<0.19; a+=0.05){
-          Lives life = new Lives(0.2+a);
-          lives_list.add(life);
-        }
-        while(alive){ 
-          
-          StdDraw.clear(StdDraw.BLACK);
-          StdDraw.pause(10);
-          current_time = System.currentTimeMillis();
-          
-          
-          
-          
-          
-          if(StdDraw.isKeyPressed(70)){      //rotate left if S is pressed 
+        if(StdDraw.isKeyPressed(70)){      //rotate left if S is pressed 
+          if (multiplayer == 0){           
             player.rotate_anti();
+          }else{                          //controls for player 2
+            player1.rotate_anti();
           }
-          
-          if (StdDraw.isKeyPressed(37)){      // move left if left arrow key is pressed
-            player.move_left();  
+        }
+        
+        if (StdDraw.isKeyPressed(37)){      // move left if left arrow key is pressed
+          if(multiplayer==0){
+            player.move_left();              //also controls for player 2
+          }else{
+            player2.move_left();
           }
-          
-          if(StdDraw.isKeyPressed(83)){       //rotate right if F is pressed 
-            player.rotate_clock(); 
+        }
+        if (StdDraw.isKeyPressed(71)){      // move left if left arrow key is pressed
+          if(multiplayer==1){
+            player1.move_left();              //also controls for player 1
           }
-          
-          if (StdDraw.isKeyPressed(39)){       // move right if right arrow key is pressed
-            player.move_right();
-          } 
-          
-          if (StdDraw.isKeyPressed(KeyEvent.VK_W) && current_time-previous_time>=350){      //release missile if w is pressed 
-            previous_time = System.currentTimeMillis(); //this ensures that a missile can only be released every 0.35 seconds
-            Missile bullet = new Missile(0.008*Math.cos(Math.toRadians(player.theta+90)), 0.008*Math.sin(Math.toRadians(player.theta+90)), player.x, 0.1,player.theta);  //gives missile the same initial x and y value as shooter
+        }
+        
+        if(StdDraw.isKeyPressed(83)){       //rotate right if F is pressed 
+          if(multiplayer==0){
+            player.rotate_clock();               //also controls for player 1
+          }else{
+            player1.rotate_clock(); 
+          }
+        }
+        if(StdDraw.isKeyPressed(102)){       //rotate right if numpad 6 is pressed 
+          if(multiplayer==1){
+            player2.rotate_clock();               //also controls for player 2
+          }
+        }
+        
+        if (StdDraw.isKeyPressed(39)){       // move right if right arrow key is pressed
+          if(multiplayer==0){
+            player.move_right();              //also controls for player 2
+          }else{
+            player2.move_right();
+          }
+        } 
+        
+        if (StdDraw.isKeyPressed(72)){       // move right if right H key is pressed
+          if(multiplayer==1){
+            player1.move_right();              //also controls for player 1
+          }
+        } 
+        
+        if (StdDraw.isKeyPressed(KeyEvent.VK_W) && current_time-previous_time>=350){      //release missile if w is pressed  ALSO FOR PLAYER 1
+          previous_time = System.currentTimeMillis(); //this ensures that a missile can only be released every 0.35 seconds
+          if (multiplayer==0){
+            Missile bullet = new Missile(0.01*Math.cos(Math.toRadians(player.theta+90)), 0.01*Math.sin(Math.toRadians(player.theta+90)), player.x, 0.1,player.theta);  //gives missile the same initial x and y value as shooter
             laser.add(bullet); 
             StdAudio.play("laser.wav");
           }
-          
-          
-          if (StdDraw.isKeyPressed(27)){      // close window if escape is pressed
-            System.exit(0); 
+          else{
+            Missile bullet1 = new Missile(0.01*Math.cos(Math.toRadians(player1.theta+90)), 0.01*Math.sin(Math.toRadians(player1.theta+90)), player1.x, 0.1,player1.theta);  //gives missile the same initial x and y value as shooter
+            laser1.add(bullet1); 
+            StdAudio.play("laser.wav");
           }
+        }
+        
+        if (StdDraw.isKeyPressed(KeyEvent.VK_ENTER) && current_time-previous_time>=350){      //release missile if w is pressed  ALSO FOR PLAYER 2
+          previous_time = System.currentTimeMillis(); //this ensures that a missile can only be released every 0.35 seconds
+          if (multiplayer==1){
+            Missile bullet2 = new Missile(0.01*Math.cos(Math.toRadians(player2.theta+90)), 0.01*Math.sin(Math.toRadians(player2.theta+90)), player2.x, 0.1,player2.theta);  //gives missile the same initial x and y value as shooter
+            laser2.add(bullet2); 
+            StdAudio.play("laser.wav");
+          }
+        }
+        
+        if (StdDraw.isKeyPressed(27)){      // close window if escape is pressed
+          System.exit(0); 
+        }
+        if (StdDraw.isKeyPressed(81)){      // close window if escape is pressed
+          System.exit(0); 
+        }
+        
+        
+        for (int i = 0; i < enemies.size(); i++) {//constantly update movement of enemies and do collision checking
+          //for (Enemy enemies : enemies) {         
           
-          for (int i = 0; i < enemies.size(); i++) {//constantly update movement of enemies and do collision checking
-            //for (Enemy enemies : enemies) {         
+          boolean collision = false;
+          Enemy enemy1 = enemies.get(i);
+          enemy1.move();//update enemy position and draw
+          if(enemy1.y <= 0.02){
+            StdDraw.pause(500); 
+            //play a sad sound
             
-            boolean collision = false;
-            Enemy enemy1 = enemies.get(i);
-            enemy1.move();//update enemy position and draw
-            if(enemy1.y <= 0.02){
-              StdDraw.pause(1000); 
-              StdAudio.play("gameoversound.wav");
-              if(lives_list.size()>0){ //if the player loses and still has lives restart the game
-            	  timecnt = 233;
-                //remove all enemies
-                enemies.clear();
-                //remove all missiles
-                laser.clear();
-                
-                //redraw the missiles and enemies
+            
+            if(lives_list.size()>0){ 
+              //remove all missiles
+              laser.clear();
+              
+              //redraw the missiles and enemies
+              if( multiplayer==0){
                 player = new Shooter(0.01, 0, 0.5, 0.1, 0);
-                
-                for (double m = 0; m < 0.17; m += 0.06) {//creates 7x3 grid of enemies
-                  for (double j = 0; j < 0.4; j += 0.06) {
-                    Enemy enemy = new Enemy(enemy_XVelocity, enemy_YVelocity, 0.02 + j, 0.98 - m); 
-                    enemies.add(enemy);
-                  }
-                }
-                lives_list.remove(0); //the player loses a life
-                
-              }else{
-                win = false;   //if an enemy gets to the end of the screen the game is over and the player has lost
-                alive = false; 
               }
-            }
-            
-            
-            for (int k = 0; k < laser.size(); k++) { //check  the position of the missiles and compare it to the position of enemies to see if any have collided
-              Missile missile1 = laser.get(k);
-              if(collision(missile1, enemy1)) { 
-                //score += 1;
-                enemies.remove(i);
-                laser.remove(k);
-                StdAudio.play("explosion.wav");
-                System.out.println(score);
-                break;
-                
-              } 
-            }
-            if(enemies.size() == 0){
-              StdDraw.pause(500); 
-              StdAudio.play("leveluptone.wav");
-              win = true;
-              alive = false; //if all of the enemies have been defeated the game ends and the player wins
+              else{
+                player1 = new Shooter(0.01, 0, 0.1, 0.1, 0); //initial values for shooter1
+                player2 = new Shooter(0.01, 0, 0.8, 0.1, 0); //initial values for shooter2
+              }
+              
+              for (int m = 0; m < enemies.size(); m ++) {//creates 7x3 grid of enemies
+                Enemy current_enemy = enemies.get(m);
+                current_enemy.y = current_enemy.y + 0.9;
+              }
+              lives_list.remove(0); //the player loses a life
+              
+            }else{
+              StdAudio.play("gameoversound.wav");
+              win = false;   //if an enemy gets to the end of the screen the game is over and the player has lost
+              alive = false; 
             }
           }
           
           
+          
+          for (int k = 0; k < laser.size(); k++) { //check  the position of the missiles and compare it to the position of enemies to see if any have collided
+            Missile missile1 = laser.get(k);
+            if(collision(missile1, enemy1)) { 
+              //score += 1;
+              enemies.remove(i);
+              laser.remove(k);
+              StdAudio.play("explosion.wav");
+              System.out.println(score);
+              break;
+              
+            }
+            
+          }
+          if(enemies.size() == 0){
+            StdDraw.pause(500); 
+            //play a happy sound
+            StdAudio.play("leveluptone.wav");
+            win = true;
+            alive = false; //if all of the enemies have been defeated the game ends and the player wins
+          }
+        }
+        
+        if(multiplayer==0){ 
           for(int i = 0; i<laser.size(); i++){ //constantly update movement of missiles
             Missile missile1 = laser.get(i);
             if (missile1.y>=1 || missile1.y<=0){ //check if missile has gone to the top of the screen, remove from array if it is
@@ -163,44 +225,63 @@ public class InvaderGameState{
             }
             missile1.move();
           }
-          
-          //add something to display score at the corner of the screen
-          
-          player.draw_shooter();
-          Font font = new Font("Gill Sans Ultra Bold", Font.BOLD, 25);
-          StdDraw.setFont(font);
-          StdDraw.setPenColor(StdDraw.WHITE);
-          StdDraw.text(0.85, 0.95, "Score: "+score);
-          
-          //display lives
-          StdDraw.text(0.1, 0.95, "Lives: ");
-          for(int b = 0; b < lives_list.size(); b++){
-            lives_list.get(b).draw();
-          }
-          StdDraw.show(35);
-          timecnt -=0.1;
-          score = timecnt;
         }
-        endgame(); //draws endgame screen
+        else{//implement two array lists of missiles if multplayer mode is enabled
+          //player1
+          for(int i = 0; i<laser1.size(); i++){ //constantly update movement of missiles
+            Missile missile1 = laser1.get(i);
+            if (missile1.y>=1 || missile1.y<=0){ //check if missile has gone to the top of the screen, remove from array if it is
+              laser1.remove(i);
+            }
+            missile1.move1();
+          }
+          //player2
+          
+          for(int i = 0; i<laser2.size(); i++){ //constantly update movement of missiles
+            Missile missile2 = laser2.get(i);
+            if (missile2.y>=1 || missile2.y<=0){ //check if missile has gone to the top of the screen, remove from array if it is
+              laser2.remove(i);
+            }
+            missile2.move2();
+          }
+          
+        }
+        
+        //add something to display score at the corner of the screen
+        
+//draw player
+        if(multiplayer==0){
+          player.draw_shooter();
+        }
+        else{
+          player1.draw_shooter1();
+          player2.draw_shooter2();
+        }
+        Font font = new Font("Gill Sans Ultra Bold", Font.BOLD, 25);
+        StdDraw.setFont(font);
+        StdDraw.setPenColor(StdDraw.WHITE);
+        StdDraw.text(0.85, 0.95, "Score: "+score);
+        
+        //display lives
+        StdDraw.text(0.1, 0.95, "Lives: ");
+        for(int b = 0; b < lives_list.size(); b++){
+          lives_list.get(b).draw();
+        }
+        StdDraw.show(35);
+        timecnt -=0.1;
+        score = timecnt;
       }
-      
+      endgame(); //draws endgame screen
     }
-    System.exit(0); 
+    
+    //}
+    
+    //SSystem.exit(0); 
   }
   
-  public void MenuSetUp(){  //Creates Start Up Menu
-    StdDraw.clear(StdDraw.BLACK);
-    StdDraw.setPenRadius(0.095);
-    StdDraw.setPenColor(StdDraw.BLACK);
-    StdDraw.point(0.5, 0.5);
-    StdDraw.line(0.05, 0.21, 0.95, 0.21);
-    Font font = new Font("Gill Sans Ultra Bold", Font.BOLD, 40);
-    StdDraw.setFont(font);
-    StdDraw.setPenColor(StdDraw.WHITE);
-    StdDraw.textLeft(0.3, 0.8, "{Game Name}");
-    shadow_effect(0.08, 0.2, "Press Spacebar To Play");
-    StdDraw.show();
-  }
+  
+  
+  
   
   public boolean collision(Missile missile, Enemy en){
     //calculates the distance between the center of the enemy and the center of the missile using pyth
@@ -210,10 +291,15 @@ public class InvaderGameState{
   }
   
   public void endgame(){
-    StdDraw.clear();
-    StdDraw.setPenColor(StdDraw.RED);
+    
+    
     if(!win){
-      StdDraw.text(0.2, 0.2, "shame");
+      
+      StdDraw.setPenColor(new Color(0,0,0, 2));
+      StdDraw.filledSquare(0.5, 0.5, 0.5);
+      StdDraw.setPenColor(StdDraw.WHITE);
+      StdDraw.text(0.2, 0.2, "oh, you lost");
+      HighScore(score);
       
       //display score
       HighScore(score);
@@ -223,20 +309,19 @@ public class InvaderGameState{
       
     }
     else{
-      StdDraw.text(0.2, 0.2, "wow");
-      //StdDraw.text(0.2, 0.5, "your score was "+score);
+      //StdDraw.picture(0.5, 0.5, "over.png", 1, 1);
+      StdDraw.setPenColor(new Color(0,0,0, 2));
+      StdDraw.filledSquare(0.5, 0.5, 0.5);
+      StdDraw.setPenColor(StdDraw.WHITE);
+      StdDraw.text(0.2, 0.2, "wow, you won");
+      HighScore(score);
       HighScore(score);
       //display score
     }
     StdDraw.show();
   }
   
-  public void shadow_effect(double x, double y,String a){
-    StdDraw.setPenColor(StdDraw.YELLOW);
-    StdDraw.textLeft(x, y, a);
-    StdDraw.setPenColor(StdDraw.RED);
-    StdDraw.textLeft(x-0.005, y-0.005, a);
-  }
+  
   
   public void HighScore(int points){
     int highscore = 0; //before reading the txt file, the highscore is 0
@@ -276,8 +361,8 @@ public class InvaderGameState{
     {  
       StdDraw.text(0.5, 0.6, "You made a New High Score! "+score);
     }else{
-      StdDraw.text(0.5, 0.6, "Your Score was: "+score);
-      StdDraw.text(0.5, 0.5, "The high score is "+highscore);
+      StdDraw.text(0.4, 0.6, "your score is "+score);
+      StdDraw.text(0.4, 0.5, "the highscore is "+highscore);
     }
   }
 }
