@@ -18,10 +18,11 @@ public class InvaderGameState{
   int timecnt;  // reference value for score
   int score;
   int lives =3;
+  int cntstrongenemies = 0;
   
   
   public InvaderGameState(int multiplayer){
-    boolean playing = false;
+    boolean playing = false;  // not used
     double current_time;
     double previous_time=0;
     boolean alive =true;
@@ -45,6 +46,9 @@ public class InvaderGameState{
       timecnt = 233;
       double enemy_XVelocity = 0.05;
       double enemy_YVelocity = 0.03;
+      boolean strong = true;
+      
+      
       
       for (double i = 0; i < 0.17; i += 0.06) {//creates 7x3 grid of enemies
         for (double j = 0; j < 0.4; j += 0.06) {
@@ -52,6 +56,23 @@ public class InvaderGameState{
           Enemy enemy = new Enemy(enemy_XVelocity, enemy_YVelocity, 0.02 + j, 0.98 - i); 
           enemies.add(enemy);
         }
+      }
+      if(strong) { 
+      // Stronger enemies
+      int sizeenemies = enemies.size();
+      int strength = 3;
+     
+      for(int i=0; i<sizeenemies/3; i++) {
+    	  enemies.remove(i);
+      }
+      for(int i=0; i<strength; i++) {
+    	  for (double j = 0; j < 0.4; j += 0.06) {
+            //0.02 is the initial x value and 0.98 is the initial y value
+            Enemy enemy = new Enemy(enemy_XVelocity, enemy_YVelocity, 0.02 + j, 0.98); 
+            enemies.add(0,enemy);
+            cntstrongenemies ++;
+    	  }
+      }
       }
       
       //for some reason the enemies get closer to each other as they go down the screen
@@ -151,18 +172,23 @@ public class InvaderGameState{
         if (StdDraw.isKeyPressed(27)){      // close window if escape is pressed
           System.exit(0); 
         }
-        if (StdDraw.isKeyPressed(81)){      // close window if escape is pressed
+        if (StdDraw.isKeyPressed(81)){      // close window if q is pressed
           System.exit(0); 
         }
         
-        
+        StdOut.printf("enemies %d %n",enemies.size());
+        StdOut.printf("cntstrongenemies %d %n",cntstrongenemies);
         for (int i = 0; i < enemies.size(); i++) {//constantly update movement of enemies and do collision checking
           //for (Enemy enemies : enemies) {         
           
           boolean collision = false;
           Enemy enemy1 = enemies.get(i);
-          enemy1.move();//update enemy position and draw
-          if(enemy1.y <= 0.02){
+          if(i>=cntstrongenemies) {
+        	  enemy1.move(0);			//update enemy position and draw
+          }else {
+        	  enemy1.move(1);
+          }
+          if(enemy1.y <= 0.02){		//check position of enemy
             StdDraw.pause(500); 
             //play a sad sound
             
@@ -180,9 +206,9 @@ public class InvaderGameState{
                 player2 = new Shooter(0.01, 0, 0.8, 0.1, 0); //initial values for shooter2
               }
               
-              for (int m = 0; m < enemies.size(); m ++) {//creates 7x3 grid of enemies
+              for (int m = 0; m < enemies.size(); m ++) {//creates 7x3 grid of remaining enemies
                 Enemy current_enemy = enemies.get(m);
-                current_enemy.y = current_enemy.y + 0.9;
+                current_enemy.y = current_enemy.y + 0.9; //back to the starting position
               }
               lives_list.remove(0); //the player loses a life
               
@@ -198,7 +224,7 @@ public class InvaderGameState{
           for (int k = 0; k < laser.size(); k++) { //check  the position of the missiles and compare it to the position of enemies to see if any have collided
             Missile missile1 = laser.get(k);
             if(collision(missile1, enemy1)) { 
-              //score += 1;
+              score += 1;
               enemies.remove(i);
               laser.remove(k);
               StdAudio.play("explosion.wav");
@@ -233,7 +259,7 @@ public class InvaderGameState{
             if (missile1.y>=1 || missile1.y<=0){ //check if missile has gone to the top of the screen, remove from array if it is
               laser1.remove(i);
             }
-            missile1.move1();
+            //missile1.move1();
           }
           //player2
           
@@ -242,7 +268,7 @@ public class InvaderGameState{
             if (missile2.y>=1 || missile2.y<=0){ //check if missile has gone to the top of the screen, remove from array if it is
               laser2.remove(i);
             }
-            missile2.move2();
+            //missile2.move2();
           }
           
         }
@@ -254,8 +280,8 @@ public class InvaderGameState{
           player.draw_shooter();
         }
         else{
-          player1.draw_shooter1();
-          player2.draw_shooter2();
+          //player1.draw_shooter1();
+          //player2.draw_shooter2();
         }
         Font font = new Font("Gill Sans Ultra Bold", Font.BOLD, 25);
         StdDraw.setFont(font);
@@ -269,7 +295,7 @@ public class InvaderGameState{
         }
         StdDraw.show(35);
         timecnt -=0.1;
-        score = timecnt;
+        //score = timecnt;
       }
       endgame(); //draws endgame screen
     }

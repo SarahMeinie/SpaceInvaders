@@ -8,7 +8,11 @@ public class Enemy extends DefaultCritter{
   public void draw(){
     StdDraw.picture(x, y, "alien.png", 0.1, 0.1);
   }
-  public void move(){
+  public void draw(int i){
+	    StdDraw.picture(x, y, "alien2.png", 0.1, 0.1);
+	  }
+  
+  public void move(int i){
     if(temp==0) {
       x += vx;
       if(x>0.9) {
@@ -18,11 +22,15 @@ public class Enemy extends DefaultCritter{
     }
     if(temp==1){
       x -= vx;        
-      if(x<0.04) {
+      if(x<0.05) {
         y -= vy;
         temp = 0;
       }else  temp = 1;
     }
-    draw();
+    if(i==0) {
+    	draw();
+    } else {
+    	draw(i);
+    }
   }
 }
