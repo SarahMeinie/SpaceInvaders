@@ -45,17 +45,10 @@ public class InvaderGameState{
       Shooter player2 = new Shooter(0.01, 0, 0.8, 0.1, 0); //initial values for shooter2 
       
       
-      double enemy_XVelocity = 0.06;
-      double enemy_YVelocity = 0.03;
+      double enemy_XVelocity = 0.03;
+      double enemy_YVelocity = 0.05;
       boolean strong = true;
-      
-      for (double i = 0; i < 0.15; i += 0.12) {//creates 7x3 grid of enemies
-        for (double j = 0; j < 0.4; j += 0.1) {
-          //0.02 is the initial x value and 0.98 is the initial y value
-          Enemy enemy = new Enemy(enemy_XVelocity, enemy_YVelocity, 0.02 + j, 0.88 - i); 
-          enemies.add(enemy);
-        }
-      }
+
       
       if(strong) { 
         // Stronger enemies
@@ -66,25 +59,32 @@ public class InvaderGameState{
           enemies.remove(i);
         }
         for(int i=0; i<strength; i++) {
-          for (double j = 0; j < 0.4; j += 0.1) {
+          for (double j = 0; j < 0.2; j += 0.07) {
             //0.02 is the initial x value and 0.98 is the initial y value
-            Enemy enemy = new Enemy(enemy_XVelocity, enemy_YVelocity, 0.02 + j, 0.98); 
-            enemies.add(0,enemy);
+            Enemy enemy = new Enemy(enemy_XVelocity, enemy_YVelocity, 0.1 + j, 0.98); 
+            enemies.add(enemy);
             cntstrongenemies ++;
           }
         }
       }
-      //for some reason the enemies get closer to each other as they go down the screen
+      //creates grid of normal enemies
+      for (double i = 0; i < 0.15; i += 0.12) {
+        for (double j = 0; j < 0.2; j += 0.07) {
+          //0.1 is the initial x value and 0.88 is the initial y value
+          Enemy enemy = new Enemy(enemy_XVelocity, enemy_YVelocity, 0.1 + j, 0.88 - i); 
+          enemies.add(enemy);
+        }
+      }
       
       //creates lives at the corner of the screen
       for(double a = 0.15; a>0; a-=0.05){
-        Lives life = new Lives(0.15+a);
+        Lives life = new Lives(0.05+a);
         lives_list.add(life);
       }
       
       //creates health at the corner of the screen
       for(double a = 0.15; a>0; a-=0.05){
-        health health = new health(0.15+a);
+        health health = new health(0.05+a);
         health_list.add(health);
       }
       
@@ -181,18 +181,21 @@ public class InvaderGameState{
         StdOut.printf("enemies %d %n",enemies.size());
         StdOut.printf("cntstrongenemies %d %n",cntstrongenemies);
         
+        //constantly update movement of enemies
+       move_enemies(enemies); 
         
-        //constantly update movement of enemies and do collision checking
-        for (int i = 0; i < enemies.size(); i++) {
-          //for (Enemy enemies : enemies) {         
+        // do collision checking
+        for (int i = 0; i < enemies.size(); i++) {       
           
           boolean collision = false;
           Enemy enemy1 = enemies.get(i);
+          
           if(i>=cntstrongenemies) {
-            enemy1.move(0);   //update enemy position and draw
+            enemy1.draw();   //update enemy position and draw
           }else {
-            enemy1.move(1);
+            enemy1.draw(1);
           }
+          
           
           if(enemy1.y <= 0.15){ //if the enemy touches the shooter, the player loses
             StdDraw.pause(500); 
@@ -275,10 +278,11 @@ public class InvaderGameState{
         }
         
         //lose a life if health is depleted
-        if(health_list.size()==0){
-          lives_list.remove(0);
+        if(lives_list.size()>0){
+          if(health_list.size()==0){
+            lives_list.remove(0);
+          }
         }
-        
         //letting random missiles be shot from enemies
         int x = (int) (Math.random() *100);
         if(x>=99 && current_time-previous_time>=100){
@@ -350,7 +354,7 @@ public class InvaderGameState{
         }
         
         //display health
-        StdDraw.text(0.1, 0.85, "Health: ");
+        //StdDraw.text(0.1, 0.85, "Health: ");
         for(int b = 0; b < health_list.size(); b++){
           health_list.get(b).draw();
         }
@@ -410,8 +414,34 @@ public class InvaderGameState{
     }
     StdDraw.show();
   }
-  
-  
+  int temp =0;
+  public void move_enemies(ArrayList<Enemy> enemies){
+    for(int a = 0; a<enemies.size(); a++){
+      Enemy enemy = enemies.get(a);
+      if(temp==0) {
+        enemy.x += enemy.vx;
+        if(enemy.x>0.9) {
+          for(int b = 0; b < enemies.size(); b++){
+            Enemy enemy2 = enemies.get(b);
+            enemy2.y -= enemy.vy;
+          }
+          temp = 1;
+        }
+        else temp = 0;
+      }
+      if(temp==1){
+        enemy.x -= enemy.vx;        
+        if(enemy.x<0.05) {
+          for(int b = 0; b < enemies.size(); b++){
+            Enemy enemy2 = enemies.get(b);
+            enemy2.y -= enemy.vy;
+          }
+          temp = 0;
+        }else  temp = 1;
+      }
+    }
+
+  }
   
   public void HighScore(int points){
     int highscore = 0; //before reading the txt file, the highscore is 0
