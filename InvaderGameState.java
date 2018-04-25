@@ -78,13 +78,13 @@ public class InvaderGameState{
       
       //creates lives at the corner of the screen
       for(double a = 0.15; a>0; a-=0.05){
-        Lives life = new Lives(0.05+a);
+        Lives life = new Lives(0.15+a);
         lives_list.add(life);
       }
       
       //creates health at the corner of the screen
       for(double a = 0.15; a>0; a-=0.05){
-        health health = new health(0.05+a);
+        health health = new health(0.01+a);
         health_list.add(health);
       }
       
