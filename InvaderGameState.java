@@ -103,7 +103,7 @@ public class InvaderGameState{
         }
         
         
-        if(StdDraw.isKeyPressed(70)){      //rotate left if S is pressed 
+        if(StdDraw.isKeyPressed(65)){      //rotate left if A is pressed 
           if (multiplayer == 0){           
             player.rotate_anti();
           }else{                          //controls for player 2
@@ -124,7 +124,7 @@ public class InvaderGameState{
           }
         }
         
-        if(StdDraw.isKeyPressed(83)){       //rotate right if F is pressed 
+        if(StdDraw.isKeyPressed(68)){       //rotate right if D is pressed 
           if(multiplayer==0){
             player.rotate_clock();               //also controls for player 1
           }else{

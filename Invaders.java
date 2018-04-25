@@ -103,6 +103,12 @@ public class Invaders{
     StdDraw.text(0.7, 0.47, "rotate clockwise(numpad 6)");
     StdDraw.text(0.7, 0.42, "rotate anticlockwise(numpad 4)");
     StdDraw.text(0.7, 0.37, "shoot(ENTER)");
+    StdDraw.text(0.2, 0.9, "singleplayer keys:");
+    StdDraw.text(0.2, 0.86, "move left(left arrow)");
+    StdDraw.text(0.2, 0.82, "move right(right arrow)");
+    StdDraw.text(0.2, 0.78, "rotate clockwise(A)");
+    StdDraw.text(0.2, 0.74, "rotate anticlockwise(D)");
+    StdDraw.text(0.2, 0.7, "shoot(W)");
     StdDraw.show();
   }
   

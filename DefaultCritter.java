@@ -55,17 +55,19 @@ public class DefaultCritter implements Critter {
   }
   
   public void rotate_anti(){
-    theta = theta - deg;
-    if (theta < min_angle){
-      theta = min_angle;
-    }
-  }
-  public void rotate_clock(){
     theta = theta + deg;
     if (theta > max_angle){
       theta = max_angle;
     }
   }
+  
+  public void rotate_clock(){
+    theta = theta - deg;//+
+     if (theta < min_angle){
+      theta = min_angle;
+    }
+  }
+  
   public void move_left(){
     x -= vx;
     if (x < min_x){
