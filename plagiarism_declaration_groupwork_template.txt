@@ -4,8 +4,7 @@ throughout the document (including the details required at the end of the
 document).
 ----------------------------------------------------------------------------
 
-This declaration is applicable to <Insert assignment detail> of <Insert
-course/module name> in <Insert Year>
+This declaration is applicable to "Cosmic Conquistadors" of Computer Science 214 in 2018
 
 By including this document as part of my assignment submission, we, 
 Tobias Woehrmueller, (Student number 22440429)
