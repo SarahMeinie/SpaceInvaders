@@ -43,7 +43,8 @@ public class Missile extends DefaultCritter{
     StdDraw.setPenColor(StdDraw.BLUE);
     StdDraw.filledCircle(x, y, 0.01);
   }
-  public void draw_enemy_missile(){
-    StdDraw.picture(x, y, "enemy_draw.png", 0.05, 0.05, theta);
+    public void draw_enemy_missile(){
+    StdDraw.setPenColor(StdDraw.RED);
+    StdDraw.filledCircle(x, y, 0.01);
   }
 }

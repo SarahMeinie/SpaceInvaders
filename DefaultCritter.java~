@@ -11,15 +11,17 @@ public class DefaultCritter implements Critter {
   protected double max_y=0.05;
   protected double vx;
   protected double vy;
+  protected int multiplayer;
   private int radius;
   private int health;
   
-  public DefaultCritter(double vx, double vy, double x, double y, double theta){
+  public DefaultCritter(double vx, double vy, double x, double y, double theta,int multiplayer){
     this.vx = vx;
     this.vy = vy;
     this.x = x;
     this.y = y;
     this.theta = theta;
+    this.multiplayer = multiplayer;
   }
   
   public void set_VelocityX(double velocityx){

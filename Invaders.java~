@@ -64,7 +64,9 @@ public class Invaders{
       }
     }
   }
-
+  
+  
+  
   public static void MenuSetUp(){  //Creates Start Up Menu
     StdDraw.pause(2);
     StdDraw.picture(0.5, 0.5, "galaxy.gif", 1, 1);
