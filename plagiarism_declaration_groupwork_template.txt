@@ -56,9 +56,11 @@ detecting plagiarism in other courses.
 Acknowledgement of sources
 --------------------------
 - enemy.jpg; source: http://dragonvale.wikia.com/wiki/File:Space_invader.jpg (28-04-2018)
-- enemy2.gif; source: https://www.behance.net/gallery/3055305/Pixel-Vampire   (28-04-2018)
+- enemy1, enemy 2 were made from editting enemy.jpg using paint.net
+
 - lives.png; source: https://www.clker.com/clipart-white-heart-18.html (28-04-2018)
 - gamestart.gif; source: http://gifsofthe80s.tumblr.com/post/91950086994/quarter-in-the-slot-1984 (28-04-2018)
 - gameoversound.wav; source: 	https://www.zapsplat.com/music/male-voice-says-game-	over-1/ (25.04.2018)
 - leveluptone; source: https://www.zapsplat.com/?s=level+up 	(25.04.2018)
-
+- Found help on on how to implement a pause screen from StackExchange; source: https://gamedev.stackexchange.com/questions/25177/implementing-pausing-functionality (28-04-2018)
+-- Had discussions with Ezra Mugadza about how to implement High Scores and about how to implement graphical extras including: the transparent rectangle underneath scores and how to implement a .gif file in java
