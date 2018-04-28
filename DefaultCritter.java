@@ -12,14 +12,15 @@ public class DefaultCritter implements Critter {
   protected double vx;
   protected double vy;
   private int radius;
-  private int health;
+  protected int score;
   
-  public DefaultCritter(double vx, double vy, double x, double y, double theta){
+  public DefaultCritter(double vx, double vy, double x, double y, double theta, int score){
     this.vx = vx;
     this.vy = vy;
     this.x = x;
     this.y = y;
     this.theta = theta;
+    this.score = score;
   }
   
   public void set_VelocityX(double velocityx){
@@ -31,6 +32,13 @@ public class DefaultCritter implements Critter {
   
   public double get_theta(){
     return theta;}
+  
+    public double get_score(){
+    return score;}
+    
+      public void set_score(int num){
+    score=num;
+      }
   
   public void set_x(double posx){
     x = posx;}
@@ -55,17 +63,19 @@ public class DefaultCritter implements Critter {
   }
   
   public void rotate_anti(){
-    theta = theta - deg;
-    if (theta < min_angle){
-      theta = min_angle;
-    }
-  }
-  public void rotate_clock(){
     theta = theta + deg;
     if (theta > max_angle){
       theta = max_angle;
     }
   }
+  
+  public void rotate_clock(){
+    theta = theta - deg;//+
+     if (theta < min_angle){
+      theta = min_angle;
+    }
+  }
+  
   public void move_left(){
     x -= vx;
     if (x < min_x){

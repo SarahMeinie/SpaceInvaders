@@ -1,0 +1,64 @@
+﻿INSTRUCTIONS: Ensure that all the required information is filled in by providing
+the appropriate details to replace all text in angled brackets (e.g. <Insert student number>)
+throughout the document (including the details required at the end of the
+document).
+----------------------------------------------------------------------------
+
+This declaration is applicable to "Cosmic Conquistadors" of Computer Science 214 in 2018
+
+By including this document as part of my assignment submission, we, 
+Tobias Woehrmueller, (Student number 22440429)
+Sarah Meinie, (Student number 19827784) [repeat for each student]
+declare the following:
+
+[BEGIN DECLARATION]
+Stellenbosch University Computer Science Assignment Declaration 
+---------------------------------------------------------------
+ 
+We know that using another person’s ideas (including written work and source
+code) and claiming them as our own constitutes plagiarism. We are aware that the
+potential penalties for this offence, as specified in the university’s policy
+on academic integrity, may include expulsion from the university and other
+serious consequences. 
+ 
+1. This submission is entirely our own work, excepting the inclusion of
+resources explicitly permitted for this assignment, and assistance as noted in
+the following item. 
+
+2. Our submission acknowledges the source of all libraries and external sources
+used, and identifies any other students and/or staff (including demis, tutors,
+and lecturers) with whom we have discussed this assignment, as well as the
+extent of those discussions. Students and staff who helped any of us, or whom any of us
+helped, with debugging, are specifically listed, as well as what portions
+of the code were involved.  (Note that, unless explicitly stated otherwise,
+submissions or solutions to assignments in previous courses at this university
+or any other educational institution which correspond to (significant portions
+of) this assignment may not be used as external sources. ­In particular, do not
+look at or use solutions to assignments from previous years.) 
+
+3. We have not allowed, and will not in the future allow, anyone to copy any
+portion of our work, or give them access to it in any way, since they may have
+the intention of passing it off as their own work (whether as is, or in a
+modified form).  In addition, we will not make my work publicly available in any
+way, including posting our code in public source code repositories or forums.
+(You may, however, allow someone to look at selected portions of your code for
+the purposes of debugging, but you may not make the code available to them
+otherwise.) 
+
+4. We have not and will not facilitate plagiarism, such as by distributing any
+written work or source code created by fellow students. 
+
+5. We understand that any code we submit may be inspected for plagiarism
+detection (either manually or by automated systems) and be retained for
+detecting plagiarism in other courses. 
+[END DECLARATION]
+
+Acknowledgement of sources
+--------------------------
+- enemy.jpg; source: http://dragonvale.wikia.com/wiki/File:Space_invader.jpg (28-04-2018)
+- enemy2.gif; source: https://www.behance.net/gallery/3055305/Pixel-Vampire   (28-04-2018)
+- lives.png; source: https://www.clker.com/clipart-white-heart-18.html (28-04-2018)
+- gamestart.gif; source: http://gifsofthe80s.tumblr.com/post/91950086994/quarter-in-the-slot-1984 (28-04-2018)
+- gameoversound.wav; source: 	https://www.zapsplat.com/music/male-voice-says-game-	over-1/ (25.04.2018)
+- leveluptone; source: https://www.zapsplat.com/?s=level+up 	(25.04.2018)
+

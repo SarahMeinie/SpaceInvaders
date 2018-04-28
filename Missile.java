@@ -1,7 +1,7 @@
 public class Missile extends DefaultCritter{
 
   public Missile(double vx, double vy, double x, double y,double theta){ //the missile has the same initial direction and position as the shooter
-    super(vx, vy ,x, y, theta);
+    super(vx, vy ,x, y, theta,0);
   }
   
   public void touching_wall(){ //if the bullet touches the wall, invert the velocity
@@ -30,20 +30,18 @@ public class Missile extends DefaultCritter{
   }
   
   public void draw(){
-    StdDraw.picture(x, y, "laser.png", 0.1, 0.1, theta);
+    StdDraw.picture(x, y, "missile.png", 0.05, 0.03, theta);
   }
   
   public void draw1(){
-    StdDraw.setPenColor(StdDraw.WHITE);
-    StdDraw.filledCircle(x, y, 0.01);
+StdDraw.picture(x, y, "missile1.png", 0.05, 0.03, theta);
   }
   
   public void draw2(){
-    
-    StdDraw.setPenColor(StdDraw.BLUE);
-    StdDraw.filledCircle(x, y, 0.01);
+StdDraw.picture(x, y, "missile2.png", 0.05, 0.03, theta);
   }
   public void draw_enemy_missile(){
-    StdDraw.picture(x, y, "enemy_draw.png", 0.05, 0.05, theta);
+        StdDraw.setPenColor(StdDraw.WHITE);
+    StdDraw.filledCircle(x, y, 0.01);
   }
 }
