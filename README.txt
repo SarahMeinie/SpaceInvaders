@@ -16,15 +16,18 @@ Thus, every object of the subclass has access to the methods of the parent class
 4) Additional work:
 	- Multiplayer mode
 	- Different types of shooters, see also multiplayer mode
-	- Leaderboard
-	- Score
+	- Enemies counterattack
+	- controls page
+	- High Score 
 	- Extra Lives
-	- Improved graphics
+	- Health Bar
 	- Hit-Points for a certain type of enemies
-	- Different types of enemies; see also Hit-Points
+	- Different types of enemies; see also Hit-Points (stronger enemies require more hits to be killed)
+	- Improved graphics
 	- Special sound when game over
 	- Special sound when game won
-	- 
+	- Score
+
 
 5) Additional libraries
 	- stdlib.jar
