@@ -1,4 +1,4 @@
-INSTRUCTIONS: Ensure that all the required information is filled in by providing
+﻿INSTRUCTIONS: Ensure that all the required information is filled in by providing
 the appropriate details to replace all text in angled brackets (e.g. <Insert student number>)
 throughout the document (including the details required at the end of the
 document).
@@ -8,7 +8,7 @@ This declaration is applicable to "Cosmic Conquistadors" of Computer Science 214
 
 By including this document as part of my assignment submission, we, 
 Tobias Woehrmueller, (Student number 22440429)
-<Insert full name>, (Student number <Insert student number>) [repeat for each student]
+Sarah Meinie, (Student number 19827784) [repeat for each student]
 declare the following:
 
 [BEGIN DECLARATION]
@@ -55,8 +55,10 @@ detecting plagiarism in other courses.
 
 Acknowledgement of sources
 --------------------------
-
-- alien2.png; source: 	https://www.wpclipart.com/space/ships/UFO/alien_spaceship	_icon_1.png.html (25.04.2018)
+- enemy.jpg; source: http://dragonvale.wikia.com/wiki/File:Space_invader.jpg (28-04-2018)
+- enemy2.gif; source: https://www.behance.net/gallery/3055305/Pixel-Vampire   (28-04-2018)
+- lives.png; source: https://www.clker.com/clipart-white-heart-18.html (28-04-2018)
+- gamestart.gif; source: http://gifsofthe80s.tumblr.com/post/91950086994/quarter-in-the-slot-1984 (28-04-2018)
 - gameoversound.wav; source: 	https://www.zapsplat.com/music/male-voice-says-game-	over-1/ (25.04.2018)
 - leveluptone; source: https://www.zapsplat.com/?s=level+up 	(25.04.2018)
 
