@@ -8,7 +8,8 @@ This declaration is applicable to "Cosmic Conquistadors" of Computer Science 214
 
 By including this document as part of my assignment submission, we, 
 Tobias Woehrmueller, (Student number 22440429)
-Sarah Meinie, (Student number 19827784) [repeat for each student]
+Sarah Meinie, (Student number 19827784) 
+Rafael Samuel, (Student number 18526136)
 declare the following:
 
 [BEGIN DECLARATION]
