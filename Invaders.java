@@ -100,7 +100,8 @@ public class Invaders{
   
   public static void key_description(){ 
     StdDraw.pause(2);
-    StdDraw.picture(0.5, 0.5, "galaxy.gif", 1, 1);
+    //StdDraw.picture(0.5, 0.5, "galaxy.gif", 1, 1);
+    StdDraw.clear(StdDraw.BLACK);
     Font font = new Font("Courier New", Font.BOLD, 20);
     StdDraw.setFont(font);
     StdDraw.text(0.5, 0.2, "to return to menu press backspace");
