@@ -1,8 +1,8 @@
 public class Enemy extends DefaultCritter{
   int temp = 0;   
   
-  public Enemy(double vx, double vy, double x, double y){
-    super(vx, vy, x, y, 0,0);
+  public Enemy(double dx, double dy, double x, double y){
+    super(dx, dy, x, y, 0,0);
   }
   
   public void draw(){
@@ -15,11 +15,11 @@ public class Enemy extends DefaultCritter{
   
   public void move(int i){
     if(temp==0) {
-      x += vx;
+      x += dx;
       if(x>0.92) {
-        y -= vy;
+        y -= dy;
         temp = 1;
-        x -= vx;
+        x -= dx;
       }else{
         
         temp = 0;
@@ -27,11 +27,11 @@ public class Enemy extends DefaultCritter{
     }
     
     if(temp==1) {
-      x -= vx;
+      x -= dx;
       if(x<0.06) {
-        y -= vy;
+        y -= dy;
         temp = 0;
-        x += vx;
+        x += dx;
       }else{
         
         temp = 1;

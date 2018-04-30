@@ -9,13 +9,13 @@ public class DefaultCritter implements Critter {
   protected double min_x=0.05;
   protected double max_x=0.95;
   protected double max_y=0.05;
-  protected double vx;
-  protected double vy;
+  protected double dx;
+  protected double dy;
   protected int score;
   
-  public DefaultCritter(double vx, double vy, double x, double y, double theta, int score){
-    this.vx = vx;
-    this.vy = vy;
+  public DefaultCritter(double dx, double dy, double x, double y, double theta, int score){
+    this.dx = dx;
+    this.dy = dy;
     this.x = x;
     this.y = y;
     this.theta = theta;
@@ -23,10 +23,10 @@ public class DefaultCritter implements Critter {
   }
   
   public void set_VelocityX(double velocityx){
-    vx = velocityx;}
+    dx = velocityx;}
   
   public void set_VelocityY(double velocityy){
-    vy = velocityy;}
+    dy = velocityy;}
   
   
   public double get_theta(){
@@ -76,21 +76,21 @@ public class DefaultCritter implements Critter {
   }
   
   public void move_left(){
-    x -= vx;
+    x -= dx;
     if (x < min_x){
       x = min_x;
     }
   }
   
   public void move_right(){
-    x += vx;
+    x += dx;
     if (x > max_x){
       x = max_x;
     }
   }
   public void move_up(){
     while(y>max_y){
-      y -= vy;
+      y -= dy;
       if(y<max_y){
         y = max_y;
       }

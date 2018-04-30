@@ -26,16 +26,16 @@ public class InvaderGameState{
     ArrayList<health> health_list = new ArrayList<health>();
     StdDraw.enableDoubleBuffering();
     
-    Shooter player = new Shooter(0.01, 0, 0.5, 0.05, 0,0); //initial values for the shooter
-    Shooter player1 = new Shooter(0.01, 0, 0.1, 0.05, 0,0); //initial values for shooter1
-    Shooter player2 = new Shooter(0.01, 0, 0.8, 0.05, 0,0); //initial values for shooter2 
+    Shooter player = new Shooter(0.01, 0, 0.5, 0.1, 0,0); //initial values for the shooter
+    Shooter player1 = new Shooter(0.01, 0, 0.1, 0.1, 0,0); //initial values for shooter1
+    Shooter player2 = new Shooter(0.01, 0, 0.8, 0.1, 0,0); //initial values for shooter2 
     
     
     double enemy_XVelocity = 0.03;
     double enemy_YVelocity = 0.05;
     boolean strong = true;
     
-    
+    level_up_screen( level);
     if(strong) { 
       // Stronger enemies
       int sizeenemies = enemies.size();
@@ -73,8 +73,8 @@ public class InvaderGameState{
       health health = new health(0.14+a);
       health_list.add(health);
     }
-     
-     
+    
+    
     boolean alive=true;
     while(alive){ 
       StdDraw.clear(StdDraw.BLACK);
@@ -139,22 +139,25 @@ public class InvaderGameState{
         }
       } 
       
-      if (StdDraw.isKeyPressed(KeyEvent.VK_W) && current_time-previous_time>=350){      //release missile if w is pressed  ALSO FOR PLAYER 1
+      if (StdDraw.isKeyPressed(KeyEvent.VK_W) && current_time-previous_time>=350){      //release missile if w is pressed (for both single okayer and multiplayer)
         previous_time = System.currentTimeMillis(); //this ensures that a missile can only be released every 0.35 seconds
+        //single player
         if (multiplayer==0){
           Missile bullet = new Missile(0.01*Math.cos(Math.toRadians(player.theta+90)), 0.01*Math.sin(Math.toRadians(player.theta+90)), player.x, 0.1,player.theta);  //gives missile the same initial x and y value as shooter
           laser.add(bullet); 
           StdAudio.play("laser.wav");
         }
-        else{
-          Missile bullet1 = new Missile(0.01*Math.cos(Math.toRadians(player1.theta+90)), 0.01*Math.sin(Math.toRadians(player1.theta+90)), player1.x, 0.1,player1.theta);  //gives missile the same initial x and y value as shooter
+        //player 1 in multiplayer
+        else{                                                             
+          Missile bullet1 = new Missile(0.01*Math.cos(Math.toRadians(player1.theta+90)), 0.01*Math.sin(Math.toRadians(player1.theta+90)), player1.x, 0.1,player1.theta);  
           laser1.add(bullet1); 
           StdAudio.play("laser.wav");
         }
       }
       
-      if (StdDraw.isKeyPressed(KeyEvent.VK_ENTER) && current_time-previous_time>=350){      //release missile if w is pressed  ALSO FOR PLAYER 2
+      if (StdDraw.isKeyPressed(KeyEvent.VK_ENTER) && current_time-previous_time>=350){      //release missile if enter is pressed  
         previous_time = System.currentTimeMillis(); //this ensures that a missile can only be released every 0.35 seconds
+        //player 2 in multiplayer
         if (multiplayer==1){
           Missile bullet2 = new Missile(0.01*Math.cos(Math.toRadians(player2.theta+90)), 0.01*Math.sin(Math.toRadians(player2.theta+90)), player2.x, 0.1,player2.theta);  //gives missile the same initial x and y value as shooter
           laser2.add(bullet2); 
@@ -171,41 +174,62 @@ public class InvaderGameState{
         
         Enemy enemy1 = enemies.get(i);
         
+        //update enemy position and draw
         if(i>=cntstrongenemies) {
-          //update enemy position and draw
           enemy1.move(0);
         }else {
           enemy1.move(1);
         }
         
-        
-        
-        if(enemy1.y <= 0.15){ //if the enemy touches the shooter, the player loses
-          
-          if(lives_list.size()>0){ 
-            //remove all missiles
-            laser.clear();
+        //if an enemy touches the bottom of the screen or if the enemy touches the shooter, the player loses a life
+        //single player
+        if (multiplayer==0){ 
+          if(enemy1.y <= 0.05 || collision_player_and_shooter(player, enemy1)){ 
             
-            //redraw the missiles and enemies
-            if( multiplayer==0){
+            if(lives_list.size()>0){ 
+              //remove all missiles from screen
+              laser.clear();
+              
+              //redraw the missiles and enemies
               player = new Shooter(0.01, 0, 0.5, 0.1, 0,0);
+
+              for (int m = 0; m < enemies.size(); m ++) {//creates grid of enemies
+                Enemy current_enemy = enemies.get(m);
+                current_enemy.y = current_enemy.y + 0.9;
+              }
+              lives_list.remove(0); //the player loses a life
+              
+            }else{
+              StdDraw.pause(500);
+              StdAudio.play("gameoversound.wav");
+              win = false;   //if an enemy gets to the end of the screen or touches the shooter while not having any lives the game is over and the player has lost
+              alive = false; 
             }
-            else{
+          }
+        }
+        //multiplayer
+        else{
+          if(enemy1.y <= 0.04 || collision_player_and_shooter(player1, enemy1) || collision_player_and_shooter(player2, enemy1)){ 
+            
+            if(lives_list.size()>0){ 
+              //remove all missiles from screen
+              laser.clear();
+              
+              //redraw the missiles and enemies
               player1 = new Shooter(0.01, 0, 0.1, 0.1, 0,0); //initial values for shooter1
               player2 = new Shooter(0.01, 0, 0.8, 0.1, 0,0); //initial values for shooter2
+              
+              for (int m = 0; m < enemies.size(); m ++) {//creates grid of enemies
+                Enemy current_enemy = enemies.get(m);
+                current_enemy.y = current_enemy.y + 0.9;
+              }
+              lives_list.remove(0); //the player loses a life
+            }else{
+              StdDraw.pause(500);
+              StdAudio.play("gameoversound.wav");
+              win = false;   //if an enemy gets to the end of the screen or touches the shooter while not having any lives the game is over and the player has lost
+              alive = false; 
             }
-            
-            for (int m = 0; m < enemies.size(); m ++) {//creates 7x3 grid of enemies
-              Enemy current_enemy = enemies.get(m);
-              current_enemy.y = current_enemy.y + 0.9;
-            }
-            lives_list.remove(0); //the player loses a life
-            
-          }else{
-            StdDraw.pause(500);
-            StdAudio.play("gameoversound.wav");
-            win = false;   //if an enemy gets to the end of the screen the game is over and the player has lost
-            alive = false; 
           }
         }
         
@@ -224,7 +248,7 @@ public class InvaderGameState{
         }
         else{
           //check player 1 collision
-          for (int k = 0; k < laser1.size(); k++) { //check  the position of the missiles and compare it to the position of enemies to see if any have collided
+          for (int k = 0; k < laser1.size(); k++) { //check  the position of the missiles released by player 1 and compare it to the position of enemies to see if any have collided
             Missile missile1 = laser1.get(k);
             if(collision(missile1, enemy1)) { 
               score += 1;
@@ -235,7 +259,7 @@ public class InvaderGameState{
             }
           }
           //check player 2 collision
-          for (int k = 0; k < laser2.size(); k++) { //check  the position of the missiles and compare it to the position of enemies to see if any have collided
+          for (int k = 0; k < laser2.size(); k++) { //check  the position of the missiles released by player 2 and compare it to the position of enemies to see if any have collided
             Missile missile1 = laser2.get(k);
             if(collision(missile1, enemy1)) { 
               score += 1;
@@ -248,19 +272,32 @@ public class InvaderGameState{
         }
         if(enemies.size() == 0){
           StdAudio.play("leveluptone.wav");
+          cntstrongenemies = 0;
           level++;
+          level_up_screen( level);
           enemy_XVelocity = enemy_XVelocity + level*0.005;
-          
-        for (double k = 0; k < 0.15; k += 0.06) {
-               for (double j = 0; j < 0.3; j += 0.06) {
+          //redraw enemies at the top of the screen
+          //stronger enemies
+          for(int a=0; a<3; a++) { 
+            for (double j = 0; j < 0.3; j += 0.06) {
+              Enemy enemy = new Enemy(enemy_XVelocity, enemy_YVelocity, 0.1 + j, 0.98); 
+              enemies.add(i, enemy);
+              cntstrongenemies ++;
+            }
+          }
+          //normal enemies
+          for (double k = 0; k < 0.15; k += 0.06) {
+            for (double j = 0; j < 0.3; j += 0.06) {
               Enemy enemy = new Enemy(enemy_XVelocity, enemy_YVelocity, 0.1 + j, 0.92 - k); 
               enemies.add(enemy);
-               }
-         }
-        if(level==4){ //final level
-          win = true;
-          alive = false; //if all of the enemies have been defeated the game ends and the player wins
-        }
+            }
+          }
+          //remove all missiles that have been shot
+          laser.clear();
+          if(level==4){ //final level
+            win = true;
+            alive = false; //if all of the enemies have been defeated the game ends and the player wins
+          }
         }
       }
       
@@ -288,17 +325,19 @@ public class InvaderGameState{
         enemies_laser.add(enemy_missile); 
         
       }
+      
+      //draws the enemy missiles
       for(int a =0; a<enemies_laser.size();a++){
         Missile enemy_missile = enemies_laser.get(a);
         enemy_missile.move_enemy_missile();
-        //COLIISION TESTING FOR ENEMY MISSILE AND SHOOTER
+        //collision testing for enemy missile and shooter
         if(collision_enemy(enemy_missile, player)){
           enemies_laser.remove(a);
           health_list.remove(0);
         }
       }
       
-      
+      //single player 
       if(multiplayer==0){ 
         for(int i = 0; i<laser.size(); i++){ //constantly update movement of missiles
           Missile missile1 = laser.get(i);
@@ -308,7 +347,8 @@ public class InvaderGameState{
           missile1.move();
         }
       }
-      else{//implement two array lists of missiles if multplayer mode is enabled
+      //implement two array lists of missiles if multplayer mode is enabled
+      else{
         //player1
         for(int i = 0; i<laser1.size(); i++){ //constantly update movement of missiles
           Missile missile1 = laser1.get(i);
@@ -318,7 +358,6 @@ public class InvaderGameState{
           missile1.move1();
         }
         //player2
-        
         for(int i = 0; i<laser2.size(); i++){ //constantly update movement of missiles
           Missile missile2 = laser2.get(i);
           if (missile2.y>=1 || missile2.y<=0){ //check if missile has gone to the top of the screen, remove from array if it is
@@ -329,7 +368,7 @@ public class InvaderGameState{
         
       }
       
-//draw player
+      //draw player
       if(multiplayer==0){
         player.draw_shooter();
       }
@@ -343,7 +382,7 @@ public class InvaderGameState{
       Font font = new Font("Courier New", Font.PLAIN, 18);
       StdDraw.setFont(font);
       
-     
+      
       //display score 
       StdDraw.setPenColor(StdDraw.WHITE);
       StdDraw.text(0.9, 0.98, "SCORE <"+score+">");
@@ -377,9 +416,16 @@ public class InvaderGameState{
     else return false;
   }
   
+  public boolean collision_player_and_shooter(Shooter shooter, Enemy en){
+    //calculates the distance between the center of the enemy and the center of the shooter using pyth
+    double dist = Math.hypot(shooter.x-en.x, shooter.y-en.y); 
+    if(dist<= 0.14)return true;
+    else return false;
+  }
+  
   //enemy missile collision testing
   public boolean collision_enemy(Missile missile, Shooter shoot){
-    //calculates the distance between the center of the enemy and the center of the missile using pyth
+    //calculates the distance between the center of the enemy missile and the center of the shooter using pyth
     double dist = Math.hypot(missile.x-shoot.x, missile.y-shoot.y); 
     if(dist<= 0.15)return true;
     else return false;
@@ -395,21 +441,21 @@ public class InvaderGameState{
       
       Enemy enemy1 = enemies.get(a);
       if(temp==0) {
-        enemy1.x += enemy1.vx;
+        enemy1.x += enemy1.dx;
         if(enemy1.x>0.9) {
           for(int b =0; b<enemies.size(); b++){
             Enemy enemy2 = enemies.get(b);
-            enemy2.y-=enemy2.vy;
+            enemy2.y-=enemy2.dy;
           }
           temp = 1;
         }else temp = 0;
       }
       if(temp==1){
-        enemy1.x -= enemy1.vx;       
+        enemy1.x -= enemy1.dx;       
         if(enemy1.x<0.05) {
           for(int b =0; b<enemies.size(); b++){
             Enemy enemy2 = enemies.get(b);
-            enemy2.y-=enemy2.vy;
+            enemy2.y-=enemy2.dy;
           }
           temp = 0;
         }else  temp = 1;
@@ -455,7 +501,7 @@ public class InvaderGameState{
       StdDraw.text(0.4, 0.25, "to replay press R");
       StdDraw.text(0.4, 0.2, "to go back to menu press backspace");
       StdDraw.show();
-
+      
       
       // append the highscore to the txt file
       try {
@@ -489,6 +535,14 @@ public class InvaderGameState{
     
     
     
+  }
+  public void level_up_screen(int level){
+    StdDraw.clear(StdDraw.BLACK);
+    Font font = new Font("Courier New", Font.BOLD, 50);
+    StdDraw.setFont(font);
+    StdDraw.text(0.5, 0.65, "LEVEL "+level);
+    StdDraw.show(100);
+    StdDraw.pause(1000);
   }
 }
 

@@ -17,7 +17,8 @@ Thus, every object of the subclass has access to the methods of the parent class
 	- Multiplayer mode
 	- Different types of shooters, see also multiplayer mode
 	- Enemies counterattack
-	- controls page
+	- Controls page
+	- Multiple levels
 	- High Score 
 	- Extra Lives
 	- Health Bar

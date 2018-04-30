@@ -1,8 +1,6 @@
 public class Shooter extends DefaultCritter{
-  private double dx = 0.1;
-  private double dy = 0.1;
-  public Shooter(double vx, double dy, double x, double y, double theta, int score){
-    super(0.1, dy, x, y, 0, score);
+  public Shooter(double dx, double dy, double x, double y, double theta, int score){
+    super(0.1, 0.1, x, y, 0, score);
   }
   
   public void move_shooter(){
