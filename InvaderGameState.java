@@ -14,6 +14,7 @@ public class InvaderGameState{
     double previous_time=0;
     int cntstrongenemies = 0;
     int score =0;
+    int level =1;
     
     ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     ArrayList<Missile> enemies_laser = new ArrayList<Missile>();
@@ -247,8 +248,19 @@ public class InvaderGameState{
         }
         if(enemies.size() == 0){
           StdAudio.play("leveluptone.wav");
+          level++;
+          enemy_XVelocity = enemy_XVelocity + level*0.005;
+          
+        for (double k = 0; k < 0.15; k += 0.06) {
+               for (double j = 0; j < 0.3; j += 0.06) {
+              Enemy enemy = new Enemy(enemy_XVelocity, enemy_YVelocity, 0.1 + j, 0.92 - k); 
+              enemies.add(enemy);
+               }
+         }
+        if(level==4){ //final level
           win = true;
           alive = false; //if all of the enemies have been defeated the game ends and the player wins
+        }
         }
       }
       
@@ -331,10 +343,14 @@ public class InvaderGameState{
       Font font = new Font("Courier New", Font.PLAIN, 18);
       StdDraw.setFont(font);
       
-      //StdDraw.picture(0, 0.12, "setup.png", 0.5, 0.5);
-      
+     
+      //display score 
       StdDraw.setPenColor(StdDraw.WHITE);
       StdDraw.text(0.9, 0.98, "SCORE <"+score+">");
+      
+      //display level
+      StdDraw.setPenColor(StdDraw.WHITE);
+      StdDraw.text(0.5, 0.98, "LEVEL <"+level+">");
       
       //display lives
       StdDraw.text(0.1, 0.98, "LIVES: ");
@@ -473,14 +489,6 @@ public class InvaderGameState{
     
     
     
-  }
-  public static void endgame(){
-    StdDraw.pause(2);
-    StdDraw.clear();
-    StdDraw.setPenColor(StdDraw.BLACK);
-    StdDraw.text(0.4, 0.25, "to replay press R");
-    StdDraw.text(0.4, 0.15, "to go back to menu press spacebar");
-    StdDraw.show();
   }
 }
 

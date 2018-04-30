@@ -69,10 +69,10 @@ public class Invaders{
           break;
           
         case 5:
-          if(StdDraw.isKeyPressed(82)){
+          if(StdDraw.isKeyPressed(82)){ //r
             selection = 3;
           }
-          if(StdDraw.isKeyPressed(8)){
+          if(StdDraw.isKeyPressed(8)){ //backspace
               selection = 4;
             }
       }
@@ -100,7 +100,6 @@ public class Invaders{
   
   public static void key_description(){ 
     StdDraw.pause(2);
-    //StdDraw.picture(0.5, 0.5, "galaxy.gif", 1, 1);
     StdDraw.clear(StdDraw.BLACK);
     Font font = new Font("Courier New", Font.BOLD, 20);
     StdDraw.setFont(font);
